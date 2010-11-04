@@ -1,0 +1,50 @@
+#######################
+#		      #
+# fedora-checksum.pl  #
+# 		      #
+#######################
+Description:
+
+
+Requirements:
+- Linux --> Because I use only it :-)
+- Perl5
+- Perl Modules
+	├───▸ LWP		(http auth)
+	├───▸ IO::Socket::SSL 	(https)
+	└───▸ Config::Simple	(config file parser)
+
+------ Perl Modules Installation ------
+ ~# perl -MCPAN -e shell
+ cpan[1]> install LWP
+ cpan[1]> install IO::Socket::SSL
+ cpan[1]> install Config::Simple
+---------------------------------------
+
+Usage:
+
+1. Configuration
+	
+	Open file config.example and write in all the parameter to get this script working.
+
+	Move (or copy) config.example in config.cfg 
+	* if you want to rename the file (e. config.myfedora), remember to check the inclusion 	*
+	* in fedora-checksum.pl [Config::Simple->import_from("config.cfg",$Config);]		*
+	
+2. Run!
+	~# chmod +x fedora-checksum.pl
+	~# ./fedora-checksum.pl
+
+	- or -
+
+	~# perl fedora-checksum.pl	
+
+3. Crontab
+
+Add the script in Cron for a periodical check or run manually ...
+
+----------- Crontab Installation -----------
+ crontab -e
+ [add following line to check every hour...]
+ 00 * * * * /where/is/it/fedora-checksum.pl > /dev/null 
+--------------------------------------------

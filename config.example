@@ -1,0 +1,29 @@
+[Fedora]
+# Fedora-Commons repo protocol
+Protocol = 'https'
+# Fedora-Commons URL [e. myfedora.mydomain.com:8443 -or- localhost]
+Host 	 = 'fedora-url:8443'
+# Fedora-Commons Authentication Realm ;
+# You can run this script and get it by the error swown
+# [e. !!Fedora Repository Server]
+Realm	 = 'fedora'
+# Fedora-Commons Context
+Context  = 'fedora'
+# Fedora-Commons username - [e. fedoraAdmin]
+Username = 'fedora-user'
+# Fedora-Commons password - [e. fedoraAdmin]
+Password = 'fedora-pass'
+
+[Items]
+# TODO!
+#
+# % of items to be checked
+#Number = "10"
+
+
+# Items per page to get via API-A (min:1 - max:200) 
+Page = "10"
+
+[Others]
+# notification address [e. fedora-admin@mydomain.com]
+Email = 'your-email@domain.xxx'
