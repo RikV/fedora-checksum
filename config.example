@@ -15,14 +15,17 @@ Username = 'fedora-user'
 Password = 'fedora-pass'
 
 [Items]
-# TODO!
+# ... still implementing ...
 #
-# % of items to be checked
-#Number = "10"
+# Use random items ? [0/1]
+Random = '0'
 
+# % of items to be checked (...if random is enabled!)
+Number = "10"
 
 # Items per page to get via API-A (min:1 - max:200) 
 Page = "10"
+
 
 [Others]
 # notification address [e. fedora-admin@mydomain.com]

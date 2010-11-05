@@ -17,6 +17,7 @@ Config::Simple->import_from("config.cfg",$Config);
 
 ### first run ...
 $session = getPIDs();
+print "\n...getting session: $session\n\n";
 
 do {
 	$session = getPIDs_by_token($session);
@@ -49,9 +50,10 @@ sub getDatastreams {
 	my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/objects/".$ppid."/datastreams/?format=xml");
 	my @ds = ($response->content =~ /\<datastream dsid\=\"(\S+)\"/g);
         foreach (@ds) {
-                print "\tGetting Datastream (PID: $ppid): $_\n";
+                #print "\tGetting Datastream (PID: $ppid): $_\n";
 		#### checksum here!!!!!!
-		print "\t\tChecking MD5 ...";
+		#print "PID: $ppid\tChecking MD5 ...";
+		print "PID: $ppid - DS: $_ ";
 		my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/objects/".$ppid."/datastreams/$_?format=xml&validateChecksum=true");
 		$check = checkDs($response->content);
 		switch($check) {
@@ -64,11 +66,12 @@ sub getDatastreams {
 				break;
 			}
 			case 1 {
-				print "\t... OK!\n";
+				print "... OK!\n";
 				break;
 			}
 			case 2 {
-				print "\t... Checksum not defined in config!\n";
+				#print "... Checksum not defined in config!\n";
+				print "... WARN!\n";
 				break;
 			}
 		}
@@ -79,8 +82,8 @@ sub getDatastreams {
 sub getPIDs {
 	my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/search?pid=true&terms=&query=&maxResults=".$Config->{"Items.Page"}."&xml=true");
 	if ($response->content =~ /\<token\>(\S+)\</) {
-		$xml = $response->content;
-		fetchObjects($xml);
+		my $xml = $response->content;
+		($Config->{"Items.Number"}) ? fetchRandomObjects($xml) : fetchObjects($xml);
 		return $1;
         }
 }
@@ -89,7 +92,8 @@ sub getPIDs_by_token {
 	my $session = $_[0];
 	if ($session =~ /\S+/) {
 		my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/search?sessionToken=$session&xml=true");
-		fetchObjects($response->content);
+		my $xml = $response->content;
+		($Config->{"Items.Number"}) ? fetchRandomObjects($xml) : fetchObjects($xml);
 		if ($response->content =~ /\<token\>(\S+)\</) {
                         my $token = $1;
 			return $token;
@@ -109,11 +113,11 @@ sub fetchRandomObjects {
         foreach (@ids) {
                 if ($_ =~ /\s+\<pid\>(\S+)\<\/pid\>/) { 
 				push(@pid,$1);	
-			#####getDatastreams($1);
                 }
         }
 	### getting random indexes
-	for (my $i=0; $i<($#pid+1)*($Config->{"Items.Number"}); $i++) {
+	print "$#pid\n";
+	for (my $i=0; $i<($#pid+1)*($Config->{"Items.Number"}/100); $i++) {
 		$rand = int(rand($#pid+1));
 		getDatastreams($pid[$rand]);
 	}
@@ -124,8 +128,6 @@ sub fetchObjects {
         my @ids = split('\n',$response);
         foreach (@ids) {
                 if ($_ =~ /\s+\<pid\>(\S+)\<\/pid\>/) {
-                        #print "Getting PID: $1\n";
-                        #print "...getting datastreams...\n";
                         getDatastreams($1);
                 }
         }
