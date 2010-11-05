@@ -102,15 +102,31 @@ sub getPIDs_by_token {
 	else {return 0;}
 }
 #### get all PIDs from page
-sub fetchObjects {
+sub fetchRandomObjects {
 	my $response = $_[0];
 	my @ids = split('\n',$response);
 	my @pid;
         foreach (@ids) {
                 if ($_ =~ /\s+\<pid\>(\S+)\<\/pid\>/) { 
+				push(@pid,$1);	
+			#####getDatastreams($1);
+                }
+        }
+	### getting random indexes
+	for (my $i=0; $i<($#pid+1)*($Config->{"Items.Number"}); $i++) {
+		$rand = int(rand($#pid+1));
+		getDatastreams($pid[$rand]);
+	}
+}
+#### get random PIDs from page
+sub fetchObjects {
+        my $response = $_[0];
+        my @ids = split('\n',$response);
+        foreach (@ids) {
+                if ($_ =~ /\s+\<pid\>(\S+)\<\/pid\>/) {
                         #print "Getting PID: $1\n";
-			#print "...getting datastreams...\n";
-			getDatastreams($1);
+                        #print "...getting datastreams...\n";
+                        getDatastreams($1);
                 }
         }
 }
