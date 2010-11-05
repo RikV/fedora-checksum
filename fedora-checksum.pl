@@ -133,8 +133,9 @@ sub checkDs {
 }
 ####### Alert
 sub alert {
+	$mta = $Config->{'Others.MTA'};
 	my ($pid,$t)=@_;
-	open(MAIL,"|/usr/bin/mail -s 'PRESERVATION ERROR' $Config->{'Others.Email'}");
+	open(MAIL,"|$Config->{'Others.MTA'} -s 'PRESERVATION ERROR' $Config->{'Others.Email'}");
 	print MAIL scalar(localtime()),"\n\n\tObject PID $pid\n\tDatastream Type $t\n\n\n";
 	close MAIL;
 	return 1;

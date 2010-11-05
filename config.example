@@ -27,3 +27,7 @@ Page = "10"
 [Others]
 # notification address [e. fedora-admin@mydomain.com]
 Email = 'your-email@domain.xxx'
+# MTA agent
+# You can get the MTA' path running "which mail" command 
+# [e. /usr/bin/mail]
+MTA = '/usr/bin/mail'
