@@ -83,7 +83,7 @@ sub getPIDs {
 	my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/search?pid=true&terms=&query=&maxResults=".$Config->{"Items.Page"}."&xml=true");
 	if ($response->content =~ /\<token\>(\S+)\</) {
 		my $xml = $response->content;
-		($Config->{"Items.Number"}) ? fetchRandomObjects($xml) : fetchObjects($xml);
+		($Config->{"Items.Random"}) ? fetchRandomObjects($xml) : fetchObjects($xml);
 		return $1;
         }
 }
@@ -93,7 +93,7 @@ sub getPIDs_by_token {
 	if ($session =~ /\S+/) {
 		my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/search?sessionToken=$session&xml=true");
 		my $xml = $response->content;
-		($Config->{"Items.Number"}) ? fetchRandomObjects($xml) : fetchObjects($xml);
+		($Config->{"Items.Random"}) ? fetchRandomObjects($xml) : fetchObjects($xml);
 		if ($response->content =~ /\<token\>(\S+)\</) {
                         my $token = $1;
 			return $token;
