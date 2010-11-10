@@ -1,4 +1,7 @@
 #!/usr/bin/perl
+#
+# Author:	Riccardo Valzorio - fc-devel@cilea.it
+#
 
 # loadin' modules
 #use DBI; # removed DB connection
@@ -80,7 +83,7 @@ sub getDatastreams {
 
 #### PID, 
 sub getPIDs {
-	my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/search?pid=true&terms=&query=&maxResults=".$Config->{"Items.Page"}."&xml=true");
+	my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/objects?pid=true&terms=&query=&maxResults=".$Config->{"Items.Page"}."&resultFormat=xml");
 	if ($response->content =~ /\<token\>(\S+)\</) {
 		my $xml = $response->content;
 		($Config->{"Items.Number"}) ? fetchRandomObjects($xml) : fetchObjects($xml);
@@ -91,7 +94,7 @@ sub getPIDs {
 sub getPIDs_by_token {
 	my $session = $_[0];
 	if ($session =~ /\S+/) {
-		my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/search?sessionToken=$session&xml=true");
+		my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/objects?sessionToken=$session&resultFormat=xml");
 		my $xml = $response->content;
 		($Config->{"Items.Number"}) ? fetchRandomObjects($xml) : fetchObjects($xml);
 		if ($response->content =~ /\<token\>(\S+)\</) {
@@ -116,9 +119,19 @@ sub fetchRandomObjects {
                 }
         }
 	### getting random indexes
-	for (my $i=0; $i<($#pid+1)*($Config->{"Items.Number"}/100); $i++) {
-		$rand = int(rand($#pid+1));
-		getDatastreams($pid[$rand]);
+	my $repetitions = 0;
+	my %items = ();
+	for (my $i=0; $i<($#pid+1+$repetitions)*($Config->{"Items.Number"}/100); $i++) {
+		my $rand = int(rand($#pid+1));
+		if ($items{$rand}) {
+			#item exists, 1 iteration added.
+			print "...adding 1 iteration! PID: $pid[$rand] [total duplicates found: $repetitions]\n";
+			++$repetitions;
+		}
+		else {	
+			$items{$rand} = 1;	
+			getDatastreams($pid[$rand]);
+		}
 	}
 }
 #### get random PIDs from page
