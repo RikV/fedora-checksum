@@ -70,8 +70,8 @@ sub getDatastreams {
 				break;
 			}
 			case 2 {
-				#print "... Checksum not defined in config!\n";
-				print "... WARN!\n";
+				print "... WARN! ";
+				print "... Checksum not defined in config!\n";
 				break;
 			}
 		}
@@ -116,7 +116,6 @@ sub fetchRandomObjects {
                 }
         }
 	### getting random indexes
-	print "$#pid\n";
 	for (my $i=0; $i<($#pid+1)*($Config->{"Items.Number"}/100); $i++) {
 		$rand = int(rand($#pid+1));
 		getDatastreams($pid[$rand]);
