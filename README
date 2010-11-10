@@ -1,10 +1,13 @@
-#######################
-#		      #
-# fedora-checksum.pl  #
-# 		      #
-#######################
-Description:
+#################################################
+#		      				#
+# fedora-checksum.pl - v0.2 (10 Nov 2010) 	#
+#						# 
+# Author: Riccardo Valzorio - fc-devel@cilea.it #  
+# 		     				# 
+#################################################
 
+Description:
+A Perl script using REST to iterate through the objects and datastreams in your repository to check the validity of the content against their checksums.
 
 Requirements:
 - Linux --> Because I use only it :-)
@@ -48,3 +51,7 @@ Add the script in Cron for a periodical check or run manually ...
  [add following line to check every hour...]
  00 * * * * /where/is/it/fedora-checksum.pl > /dev/null 
 --------------------------------------------
+
+Contacts:
+
+* fc-devel@cilea.it
