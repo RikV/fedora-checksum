@@ -121,12 +121,14 @@ sub fetchRandomObjects {
 	### getting random indexes
 	my $repetitions = 0;
 	my %items = ();
-	for (my $i=0; $i<($#pid+1+$repetitions)*($Config->{"Items.Number"}/100); $i++) {
+	for (my $i=0; ($i-$repetitions)<($#pid+1)*($Config->{"Items.Number"}/100); $i++) {
 		my $rand = int(rand($#pid+1));
 		if ($items{$rand}) {
 			#item exists, 1 iteration added.
-			print "...adding 1 iteration! PID: $pid[$rand] [total duplicates found: $repetitions]\n";
 			++$repetitions;
+			print "...adding 1 iteration! PID: $pid[$rand] [total duplicates found: $repetitions]\n";
+			print "Old loop value: ".($#pid+1+$repetitions)."\n";
+			print "New loop value: ".($#pid+1+$repetitions)."\n";
 		}
 		else {	
 			$items{$rand} = 1;	
