@@ -5,6 +5,12 @@ Contact: fc-deve@cilea.it
 ---------------------------
 
 -------------------------
+Version 0.2a -> 2010-11-11
+-------------------------
+- FIXED random isssue
+- Added Changelog file
+
+-------------------------
 Version 0.2 -> 2010-11-10
 -------------------------
 [config.example]
