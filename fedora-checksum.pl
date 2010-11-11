@@ -117,20 +117,22 @@ sub fetchRandomObjects {
                 }
         }
 	### getting random indexes
-	my $repetitions = 0;
 	my %items = ();
-	for (my $i=0; ($i-$repetitions)<($#pid+1)*($Config->{"Items.Number"}/100); $i++) {
+	my $good = 0;
+	do {
 		my $rand = int(rand($#pid+1));
 		if ($items{$rand}) {
-			#item exists, 1 iteration added.
-			++$repetitions;
-			print "...adding 1 iteration! PID: $pid[$rand] [total duplicates found: $repetitions]\n";
+			#item exists, not incrementing $good!
+			print "...adding 1 iteration! PID: $pid[$rand]\n";
 		}
 		else {	
 			$items{$rand} = 1;	
 			getDatastreams($pid[$rand]);
+			#first time checked, increment $good
+			++$good;
 		}
 	}
+	while ($good < ($#pid+1)*($Config->{"Items.Number"}/100));
 }
 #### get random PIDs from page
 sub fetchObjects {
