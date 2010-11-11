@@ -127,8 +127,6 @@ sub fetchRandomObjects {
 			#item exists, 1 iteration added.
 			++$repetitions;
 			print "...adding 1 iteration! PID: $pid[$rand] [total duplicates found: $repetitions]\n";
-			print "Old loop value: ".($#pid+1+$repetitions)."\n";
-			print "New loop value: ".($#pid+1+$repetitions)."\n";
 		}
 		else {	
 			$items{$rand} = 1;	
