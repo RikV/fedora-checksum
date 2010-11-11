@@ -15,8 +15,6 @@ Username = 'fedora-user'
 Password = 'fedora-pass'
 
 [Items]
-# ... still implementing ...
-#
 # Use random items ? [0/1]
 Random = '0'
 

@@ -53,9 +53,7 @@ sub getDatastreams {
 	my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/objects/".$ppid."/datastreams/?format=xml");
 	my @ds = ($response->content =~ /\<datastream dsid\=\"(\S+)\"/g);
         foreach (@ds) {
-                #print "\tGetting Datastream (PID: $ppid): $_\n";
 		#### checksum here!!!!!!
-		#print "PID: $ppid\tChecking MD5 ...";
 		print "PID: $ppid - DS: $_ ";
 		my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/objects/".$ppid."/datastreams/$_?format=xml&validateChecksum=true");
 		$check = checkDs($response->content);
