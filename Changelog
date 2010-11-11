@@ -1,0 +1,26 @@
+---------------------------
+Fedora Checksum
+Author: Riccardo Valzorio
+Contact: fc-deve@cilea.it
+---------------------------
+
+-------------------------
+Version 0.2 -> 2010-11-10
+-------------------------
+[config.example]
+- Added configuration setting to define % of items to be checked
+- Added MTA configuration
+
+[fedora-checksum.pl]
+- Added function to check % items per page
+- Added MTA selection by configuration file
+
+-------------------------
+Version 0.1 -> 2010-11-05
+-------------------------
+(Initial Release)
+
+- Added full API-A integration
+- Added sample config file
+- Added object' iteration through sessions
+- Addedd notification via /usr/bin/mail
