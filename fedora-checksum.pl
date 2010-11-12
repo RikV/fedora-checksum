@@ -121,12 +121,10 @@ sub fetchRandomObjects {
 	my $good = 0;
 	do {
 		my $rand = int(rand($#pid+1));
-		if ($items{$rand}) {
-			#item exists, not incrementing $good!
-			print "...adding 1 iteration! PID: $pid[$rand]\n";
-		}
-		else {	
+		#if not taken
+		if (!$items{$rand}) {
 			$items{$rand} = 1;	
+			print "# $good #\n";
 			getDatastreams($pid[$rand]);
 			#first time checked, increment $good
 			++$good;
