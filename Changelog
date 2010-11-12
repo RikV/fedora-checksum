@@ -5,6 +5,12 @@ Contact: fc-deve@cilea.it
 ---------------------------
 
 -------------------------
+Version 0.3 -> 2010-11-12
+-------------------------
+- FIXED and improved random function
+- moved /search to /object call supporting future Fedora' releases
+
+-------------------------
 Version 0.2a -> 2010-11-11
 -------------------------
 - FIXED random isssue
