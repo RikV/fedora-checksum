@@ -1,4 +1,7 @@
 #!/usr/bin/perl
+#
+# Author:	Riccardo Valzorio - fc-devel@cilea.it
+#
 
 # loadin' modules
 #use DBI; # removed DB connection
@@ -50,9 +53,7 @@ sub getDatastreams {
 	my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/objects/".$ppid."/datastreams/?format=xml");
 	my @ds = ($response->content =~ /\<datastream dsid\=\"(\S+)\"/g);
         foreach (@ds) {
-                #print "\tGetting Datastream (PID: $ppid): $_\n";
 		#### checksum here!!!!!!
-		#print "PID: $ppid\tChecking MD5 ...";
 		print "PID: $ppid - DS: $_ ";
 		my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/objects/".$ppid."/datastreams/$_?format=xml&validateChecksum=true");
 		$check = checkDs($response->content);
@@ -80,7 +81,7 @@ sub getDatastreams {
 
 #### PID, 
 sub getPIDs {
-	my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/search?pid=true&terms=&query=&maxResults=".$Config->{"Items.Page"}."&xml=true");
+	my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/objects?pid=true&terms=&query=&maxResults=".$Config->{"Items.Page"}."&resultFormat=xml");
 	if ($response->content =~ /\<token\>(\S+)\</) {
 		my $xml = $response->content;
 		($Config->{"Items.Random"}) ? fetchRandomObjects($xml) : fetchObjects($xml);
@@ -91,7 +92,7 @@ sub getPIDs {
 sub getPIDs_by_token {
 	my $session = $_[0];
 	if ($session =~ /\S+/) {
-		my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/search?sessionToken=$session&xml=true");
+		my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/objects?sessionToken=$session&resultFormat=xml");
 		my $xml = $response->content;
 		($Config->{"Items.Random"}) ? fetchRandomObjects($xml) : fetchObjects($xml);
 		if ($response->content =~ /\<token\>(\S+)\</) {
@@ -116,10 +117,20 @@ sub fetchRandomObjects {
                 }
         }
 	### getting random indexes
-	for (my $i=0; $i<($#pid+1)*($Config->{"Items.Number"}/100); $i++) {
-		$rand = int(rand($#pid+1));
-		getDatastreams($pid[$rand]);
+	my %items = ();
+	my $good = 0;
+	do {
+		my $rand = int(rand($#pid+1));
+		#if not taken
+		if (!$items{$rand}) {
+			$items{$rand} = 1;	
+			print "# $good #\n";
+			getDatastreams($pid[$rand]);
+			#first time checked, increment $good
+			++$good;
+		}
 	}
+	while ($good < ($#pid+1)*($Config->{"Items.Number"}/100));
 }
 #### get random PIDs from page
 sub fetchObjects {
