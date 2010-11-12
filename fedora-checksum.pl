@@ -124,7 +124,6 @@ sub fetchRandomObjects {
 		#if not taken
 		if (!$items{$rand}) {
 			$items{$rand} = 1;	
-			print "# $good #\n";
 			getDatastreams($pid[$rand]);
 			#first time checked, increment $good
 			++$good;

@@ -5,15 +5,12 @@ Contact: fc-deve@cilea.it
 ---------------------------
 
 -------------------------
-<<<<<<< HEAD:Changelog
 Version 0.2a -> 2010-11-11
 -------------------------
 - FIXED random isssue
 - Added Changelog file
 
 -------------------------
-=======
->>>>>>> devel:Changelog
 Version 0.2 -> 2010-11-10
 -------------------------
 [config.example]
