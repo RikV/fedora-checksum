@@ -117,20 +117,23 @@ sub fetchRandomObjects {
 				push(@pid,$1);	
                 }
         }
-	### getting random indexes
-	my %items = ();
-	my $good = 0;
-	do {
-		my $rand = int(rand($#pid+1));
-		#if not taken
-		if (!$items{$rand}) {
-			$items{$rand} = 1;	
-			getDatastreams($pid[$rand]);
-			#first time checked, increment $good
-			++$good;
-		}
+	#build random array
+	my %random= ();
+	#array to hash
+	my $j = 0;
+	foreach (@pid) {
+		$random{$j} = $pid[$j];
+		++$j;
+	}	
+	#iterating through %#pids
+	for (my $i=0; $i<($#pid+1)*($Config->{"Items.Number"}/100); ++$i) {
+		#getting random item from all pids
+		my $random_index = int(rand(scalar keys(%random)));
+		my $item = $random{$random_index};
+		#removing from random array
+		delete $random{$random_index};
+		getDatastreams($pid[$random_index]);
 	}
-	while ($good < ($#pid+1)*($Config->{"Items.Number"}/100));
 }
 #### get random PIDs from page
 sub fetchObjects {
