@@ -21,13 +21,14 @@ Config::Simple->import_from("config.cfg",$Config);
 
 ### first run ...
 $session = getPIDs();
-print "\n...getting session: $session\n\n";
-
-do {
-	$session = getPIDs_by_token($session);
-	print "\n...resuming session: $session\n\n";
+if ($session) {
+	print "\n...getting session: $session\n\n";
+	do {
+		$session = getPIDs_by_token($session);
+		print "\n...resuming session: $session\n\n";
+	}
+	while ($session);
 }
-while ($session);
 
 #### Functions:
 #
@@ -129,7 +130,7 @@ sub fetchRandomObjects {
 		++$j;
 	}	
 	#iterating through %#pids
-	for (my $i=0; $i<($#pid+1)*($Config->{"Items.Number"}/100); ++$i) {
+	for (my $i=0; $i<int(($#pid+1)*($Config->{"Items.Number"}/100)); ++$i) {
 		#getting random item from all pids
 		my $random_index = int(rand(scalar keys(%random)));
 		my $item = $random{$random_index};
