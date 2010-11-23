@@ -83,11 +83,14 @@ sub getDatastreams {
 #### PID, 
 sub getPIDs {
 	my $response = auth($Config->{"Fedora.Protocol"}.'://'.$Config->{"Fedora.Host"}."/".$Config->{"Fedora.Context"}."/objects?pid=true&terms=&query=&maxResults=".$Config->{"Items.Page"}."&resultFormat=xml");
+	my $xml = $response->content;
+	($Config->{"Items.Random"}) ? fetchRandomObjects($xml) : fetchObjects($xml);
 	if ($response->content =~ /\<token\>(\S+)\</) {
-		my $xml = $response->content;
-		($Config->{"Items.Random"}) ? fetchRandomObjects($xml) : fetchObjects($xml);
 		return $1;
         }
+	else {
+		return 0;
+	}
 }
 # PID WITH token
 sub getPIDs_by_token {
