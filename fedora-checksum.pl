@@ -2,7 +2,7 @@
 #
 # Author:	Riccardo Valzorio - fc-devel@cilea.it
 #
-# Version 0.3 - 12/11/2010
+# Version 0.4 - 23/11/2010
 
 # loadin' modules
 #use DBI; # removed DB connection
