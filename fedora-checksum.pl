@@ -9,6 +9,9 @@
 use LWP;
 use Config::Simple;
 use Switch;
+# Crontab path hack 
+use FindBin '$Bin';
+
 
 # ----------------------- #
 # Configuration File      #
@@ -17,7 +20,7 @@ use Switch;
 my $Config = {};
 
 # Add your configuration file
-Config::Simple->import_from("config.cfg",$Config);
+Config::Simple->import_from("$Bin/config.cfg",$Config);
 
 ### first run ...
 $session = getPIDs();
