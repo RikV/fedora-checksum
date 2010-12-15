@@ -2,7 +2,13 @@
 #
 # Author:	Riccardo Valzorio - fc-devel@cilea.it
 #
-# Version 0.4 - 23/11/2010
+# License: 	Creative Commons Attribution-ShareAlike 3.0 Unported	
+#
+# This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 Unported License.
+# To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/ or send 
+# a letter to Creative Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
+#
+# Version 0.4a - 15/12/2010
 
 # loadin' modules
 #use DBI; # removed DB connection
